@@ -37,7 +37,7 @@
   overflow: visible;
 }
 
-/* Pacman character - moves along the track */
+/* Pacman character - moves along the track, NO MOUTH */
 .pacman-character {
   position: absolute;
   top: 50%;
@@ -54,30 +54,10 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  animation: pacmanChomp 0.25s ease-in-out infinite alternate;
+  /* REMOVED the chomping animation */
 }
 
-@keyframes pacmanChomp {
-  0% { transform: scale(1); }
-  100% { transform: scale(0.85); }
-}
-
-.pacman-mouth {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  clip-path: polygon(50% 50%, 0% 0%, 0% 100%);
-  background: var(--sand);
-  animation: mouthChomp 0.25s ease-in-out infinite alternate;
-}
-
-@keyframes mouthChomp {
-  0% { clip-path: polygon(50% 50%, 8% 8%, 8% 92%); }
-  100% { clip-path: polygon(50% 50%, 45% 45%, 45% 55%); }
-}
+/* REMOVED .pacman-mouth and @keyframes mouthChomp */
 
 /* Squares row */
 .pacman-squares {

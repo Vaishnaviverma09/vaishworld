@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './PacmanLoading.css';
 
 const PacmanLoading = ({ onComplete }) => {
-  const [step, setStep] = useState(0); // 0-11 (12 squares total)
+  const [step, setStep] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-  const totalSteps = 12; // 3 rounds × 4 squares
+  const totalSteps = 12;
 
-  // Each step: 375ms → 12 steps × 375ms = 4500ms (4.5 seconds total)
   useEffect(() => {
     const interval = setInterval(() => {
       setStep((prev) => {
@@ -29,20 +28,19 @@ const PacmanLoading = ({ onComplete }) => {
     return null;
   }
 
-  // Calculate Pacman position (0% to 100%)
   const pacmanProgress = (step / (totalSteps - 1)) * 100;
 
   return (
     <div className="pacman-loading-overlay">
       <div className="pacman-loading-container">
         <div className="pacman-track">
-          {/* Pacman character that moves right */}
+          {/* Pacman character - NO TRIANGLE */}
           <div 
             className="pacman-character"
             style={{ left: `${pacmanProgress}%` }}
           >
-            <img src="/ghost.png" alt="Pacman" className="pacman-image" />
-            <div className="pacman-mouth"></div>
+            <img src="/image.png" alt="Pacman" className="pacman-image" />
+            {/* REMOVED the pacman-mouth div */}
           </div>
 
           {/* Squares that disappear as Pacman eats them */}
