@@ -121,7 +121,7 @@ const ShuffleCard = ({ position, handleDragEnd, dragProgress, dragging, setDragg
       className="shuffle-card-item"
     >
       <div className="shuffle-card-face">
-        <img src="/image.png" alt="Card" className="shuffle-card-image" />
+        <img src="../card-back.png" alt="Card" className="shuffle-card-image" />
       </div>
     </motion.div>
   );
