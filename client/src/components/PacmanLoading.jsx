@@ -39,7 +39,7 @@ const PacmanLoading = ({ onComplete }) => {
             className="pacman-character"
             style={{ left: `${pacmanProgress}%` }}
           >
-            <img src="/image.png" alt="Pacman" className="pacman-image" />
+            <img src="/ghost.png" alt="Pacman" className="pacman-image" />
             {/* REMOVED the pacman-mouth div */}
           </div>
 
