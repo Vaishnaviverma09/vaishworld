@@ -1,6 +1,7 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PacmanPage.css";
+import PacmanLoading from '../components/PacmanLoading';
 
 // 0 = wall, 1 = walkable path. Generated with a randomized-DFS maze carve
 // so every path cell is guaranteed reachable from START to END.
@@ -51,6 +52,7 @@ export default function PacmanPage() {
   const [unlockedSongs, setUnlockedSongs] = useState([]);
   const [popup, setPopup] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [loading, setLoading] = useState(true);
   const popupTimer = useRef(null);
 
   const showPopup = useCallback((song) => {
@@ -58,6 +60,10 @@ export default function PacmanPage() {
     if (popupTimer.current) clearTimeout(popupTimer.current);
     popupTimer.current = setTimeout(() => setPopup(null), 1600);
   }, []);
+
+  const handleLoadingComplete = () => {
+    setLoading(false);
+  };
 
   const move = useCallback(
     (dr, dc) => {
@@ -100,6 +106,14 @@ export default function PacmanPage() {
   );
 
   const progress = unlockedSongs.length;
+
+  if (loading) {
+    return (
+      <div className="pacman-page">
+        <PacmanLoading onComplete={handleLoadingComplete} />
+      </div>
+    );
+  }
 
   if (gameOver) {
     return (

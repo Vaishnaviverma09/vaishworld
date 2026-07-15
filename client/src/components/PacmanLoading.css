@@ -1,0 +1,180 @@
+.pacman-loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: pacmanFadeOut 0.5s ease 4.2s forwards;
+}
+
+@keyframes pacmanFadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+.pacman-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+}
+
+.pacman-loading-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 30px;
+  background: var(--wine-dark);
+  border-radius: 20px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+  min-height: 120px;
+}
+
+.pacman-character {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.pacman-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  animation: pacmanChomp 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes pacmanChomp {
+  0% { transform: scale(1); }
+  100% { transform: scale(0.85); }
+}
+
+.pacman-mouth {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  clip-path: polygon(50% 50%, 0% 0%, 0% 100%);
+  background: var(--sand);
+  animation: mouthChomp 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes mouthChomp {
+  0% { clip-path: polygon(50% 50%, 10% 10%, 10% 90%); }
+  100% { clip-path: polygon(50% 50%, 45% 45%, 45% 55%); }
+}
+
+.pacman-square {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--sand);
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.pacman-square.eaten {
+  color: var(--crimson);
+  transform: scale(0.7);
+  opacity: 0.6;
+}
+
+.pacman-loading-text {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--wine-dark);
+  margin: 0;
+  font-weight: 600;
+}
+
+.pacman-loading-subtext {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--wine-dark);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.pacman-progress-bar {
+  width: 200px;
+  height: 6px;
+  background: rgba(49, 8, 11, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pacman-progress-fill {
+  height: 100%;
+  background: var(--crimson);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* ---- Mobile responsive ---- */
+@media (max-width: 600px) {
+  .pacman-loading-row {
+    padding: 16px 20px;
+    gap: 6px;
+    min-height: 90px;
+  }
+  
+  .pacman-character {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .pacman-square {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+  
+  .pacman-loading-text {
+    font-size: 1rem;
+  }
+  
+  .pacman-loading-subtext {
+    font-size: 0.8rem;
+  }
+  
+  .pacman-progress-bar {
+    width: 150px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pacman-loading-row {
+    padding: 12px 14px;
+    gap: 4px;
+    min-height: 70px;
+  }
+  
+  .pacman-character {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .pacman-square {
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+  }
+  
+  .pacman-loading-text {
+    font-size: 0.85rem;
+  }
+  
+  .pacman-progress-bar {
+    width: 120px;
+  }
+}
