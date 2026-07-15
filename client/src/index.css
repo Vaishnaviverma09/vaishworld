@@ -1,0 +1,84 @@
+:root {
+  --sand: #d7c6a8;
+  --wine-dark: #31080b;
+  --brick: #952530;
+  --maroon: #641920;
+  --crimson: #c63140;
+
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  /* Lets rem-based sizing scale down gracefully on small phones
+     instead of every component needing its own override. */
+  font-size: 100%;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--sand);
+  color: var(--wine-dark);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* stray absolutely-positioned elements shouldn't cause side-scroll on mobile */
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--crimson);
+  color: var(--sand);
+}
+
+/* ---- Global responsive breakpoints ---- */
+/* Tablet and down */
+@media (max-width: 900px) {
+  html {
+    font-size: 95%;
+  }
+}
+
+/* Phones */
+@media (max-width: 640px) {
+  html {
+    font-size: 92%;
+  }
+  body {
+    /* Respect device safe areas (notches, home indicators) */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+  html {
+    font-size: 70%;
+  }
+}

@@ -1,0 +1,439 @@
+.level1-page {
+  min-height: 100vh;
+  background: var(--brick);
+  color: var(--sand);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 56px 24px 40px;
+  gap: 48px;
+  text-align: center;
+}
+
+/* ---- Header copy ---- */
+.level1-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.level1-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin: 0 0 8px 0;
+}
+
+.level1-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2.2rem;
+  line-height: 1.25;
+  margin: 0 0 12px 0;
+}
+
+.level1-sub {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.level1-begin {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: var(--sand);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.level1-begin.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* ---- Card stack / fan ---- */
+.card-stack {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  height: 380px;
+  margin: 0 auto;
+}
+
+.deco-card {
+  position: absolute;
+  top: 20px;
+  width: 190px;
+  height: 270px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  user-select: none;
+}
+
+.card-jack {
+  left: 6%;
+  transform: rotate(-9deg);
+  z-index: 1;
+}
+
+.card-queen {
+  left: 21%;
+  transform: rotate(-4deg);
+  z-index: 2;
+}
+
+.card-back-1 {
+  right: 21%;
+  transform: rotate(4deg);
+  z-index: 2;
+}
+
+.card-back-2 {
+  right: 6%;
+  transform: rotate(9deg);
+  z-index: 1;
+}
+
+/* ---- The interactive middle card ---- */
+.quiz-card {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 250px;
+  height: 350px;
+  z-index: 5;
+  perspective: 1400px;
+  cursor: pointer;
+}
+
+.quiz-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: 16px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+}
+
+.quiz-card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.quiz-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.quiz-card-front {
+  background: var(--sand);
+  color: var(--wine-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.quiz-card-back {
+  background: var(--wine-dark);
+  transform: rotateY(180deg);
+}
+
+.quiz-card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- Question content ---- */
+.quiz-question {
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quiz-question legend {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.35;
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.quiz-option input {
+  accent-color: var(--maroon);
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .level1-page {
+    padding: 48px 20px 36px;
+    gap: 40px;
+  }
+  .level1-title {
+    font-size: 2rem;
+  }
+  .card-stack {
+    height: 340px;
+  }
+  .deco-card {
+    width: 160px;
+    height: 228px;
+    top: 22px;
+  }
+  .card-jack { left: 3%; }
+  .card-queen { left: 18%; }
+  .card-back-1 { right: 18%; }
+  .card-back-2 { right: 3%; }
+  .quiz-card {
+    width: 220px;
+    height: 310px;
+  }
+  .quiz-question legend {
+    font-size: 0.92rem;
+  }
+  .quiz-option {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .level1-page {
+    padding: 40px 16px 32px;
+    gap: 32px;
+  }
+  .level1-title {
+    font-size: 1.7rem;
+  }
+  .card-stack {
+    height: 300px;
+  }
+  .deco-card {
+    width: 130px;
+    height: 185px;
+    top: 30px;
+  }
+  .card-jack { left: 0%; }
+  .card-queen { left: 16%; }
+  .card-back-1 { right: 16%; }
+  .card-back-2 { right: 0%; }
+  .quiz-card {
+    width: 190px;
+    height: 265px;
+  }
+  .quiz-question legend {
+    font-size: 0.85rem;
+  }
+  .quiz-option {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .level1-page {
+    padding: 32px 12px 28px;
+    gap: 24px;
+  }
+  .level1-eyebrow {
+    font-size: 1.3rem;
+  }
+  .level1-title {
+    font-size: 1.4rem;
+  }
+  .level1-sub {
+    font-size: 0.85rem;
+  }
+  .card-stack {
+    height: 240px;
+  }
+  .deco-card {
+    width: 100px;
+    height: 142px;
+    top: 34px;
+  }
+  .card-jack { left: 0%; }
+  .card-queen { left: 15%; }
+  .card-back-1 { right: 15%; }
+  .card-back-2 { right: 0%; }
+  .quiz-card {
+    width: 150px;
+    height: 210px;
+  }
+  .quiz-question legend {
+    font-size: 0.75rem;
+  }
+  .quiz-option {
+    font-size: 0.68rem;
+    gap: 6px;
+  }
+}
+
+/* ---- Shuffle-card easter egg ----
+   Sits fixed to the viewport. Resting: small, top-right corner.
+   Click: travels + grows to the center (above the quiz card, z-index +1),
+   flips to reveal a random note, holds 10s, then reverses the whole trip. */
+.shuffle-card {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  height: 60px;
+  aspect-ratio: 5 / 7;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 6; /* one above .quiz-card's z-index: 5 */
+  perspective: 1000px;
+  transition: top 0.7s ease, right 0.7s ease, height 0.7s ease;
+}
+
+.shuffle-card.is-centered {
+  top: calc(50% - 140px); /* half of the 280px centered height (was miscalculated for 240px) */
+  right: calc(50% - 100px); /* half of the 200px width at 280px height, 5:7 ratio */
+  height: 280px;
+}
+
+.shuffle-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+  border-radius: 6px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+
+.shuffle-card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.shuffle-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.shuffle-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.shuffle-face-front {
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shuffle-quote {
+  position: absolute;
+  inset: 12% 10%;
+  margin-top:  40px;
+  color: var(--wine-dark);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.9rem;
+  line-height: 1.25;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- Shuffle-card responsive tiers ----
+   Corner (resting/back-face) and centered (revealed/front-face) sizes both
+   scale down together at each breakpoint, and the centering math is
+   recalculated for each size (5:7 aspect ratio) so it stays perfectly
+   centered rather than drifting off-center like the desktop rule was. */
+@media (max-width: 900px) {
+  .shuffle-card {
+    top: 14px;
+    right: 14px;
+    height: 52px;
+  }
+  .shuffle-card.is-centered {
+    top: calc(50% - 120px); /* half of 240px */
+    right: calc(50% - 85.71px); /* half of ~171.4px width at 240px height */
+    height: 240px;
+  }
+  .shuffle-quote {
+    font-size: 0.78rem;
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .shuffle-card {
+    top: 12px;
+    right: 12px;
+    height: 42px;
+  }
+  .shuffle-card.is-centered {
+    top: calc(50% - 95px); /* half of 190px */
+    right: calc(50% - 67.86px); /* half of ~135.7px width at 190px height */
+    height: 190px;
+  }
+  .shuffle-quote {
+    font-size: 0.62rem;
+    margin-top: 22px;
+    -webkit-line-clamp: 6;
+  }
+}
+
+@media (max-width: 400px) {
+  .shuffle-card {
+    top: 10px;
+    right: 10px;
+    height: 34px;
+  }
+  .shuffle-card.is-centered {
+    top: calc(50% - 75px); /* half of 150px */
+    right: calc(50% - 53.57px); /* half of ~107.1px width at 150px height */
+    height: 150px;
+  }
+  .shuffle-quote {
+    font-size: 0.5rem;
+    margin-top: 14px;
+    inset: 10% 8%;
+    -webkit-line-clamp: 5;
+  }
+}
