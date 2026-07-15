@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Level1Page.css";
 import API_BASE_URL from '../config';
+import { getUserId } from '../utils/session';
 
 const questions = [
   {
     question: "What is a hobby she has never taken?",
     options: ["Ballet", "Fashion", "Dancing", "Music"],
     correct: "Dancing",
-    // TODO: replace with real image links — question 1's reaction pair
     correctImage: "/hailey_meme.jpg",
     wrongImage: "/kendal_meme_2.jpg",
   },
@@ -16,7 +16,6 @@ const questions = [
     question: "How does she like her coffee?",
     options: ["Cappuccino", "Black", "Iced", "Mocha"],
     correct: "Black",
-    // TODO: replace with real image links — question 2's reaction pair
     correctImage: "/billie_meme.jpg",
     wrongImage: "/baby_meme.png",
   },
@@ -24,7 +23,6 @@ const questions = [
     question: "What is her comfort movie?",
     options: ["ZNMD", "Highway", "Dear Zindagi", "Laila Majnu"],
     correct: "Dear Zindagi",
-    // TODO: replace with real image links — question 3's reaction pair
     correctImage: "/kris_meme.jpg",
     wrongImage: "/meme.png",
   },
@@ -32,7 +30,6 @@ const questions = [
     question: "What is her ideal date idea?",
     options: ["Movie night", "Bookstore", "Shopping", "Picnic"],
     correct: "Bookstore",
-    // TODO: replace with real image links — question 4's reaction pair
     correctImage: "/kendal_meme_1.png",
     wrongImage: "/steve_meme.png",
   },
@@ -45,7 +42,6 @@ const questions = [
       "Baggy jeans crop top",
     ],
     correct: "Baggy jeans crop top",
-    // TODO: replace with real image links — question 5's reaction pair
     correctImage: "/hailey_meme_2.jpg",
     wrongImage: "/kid_meme.jpg",
   },
@@ -79,31 +75,19 @@ export default function Level1Page() {
   const [backImage, setBackImage] = useState(null);
   const [userId, setUserId] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [shufflePhase, setShufflePhase] = useState("idle");
   const [shuffleQuote, setShuffleQuote] = useState(null);
 
-  // Get userId from localStorage
+  // Get userId using the session helper
   useEffect(() => {
-    const storedId = localStorage.getItem("vaishworld_userId");
-    if (storedId) {
-      setUserId(storedId);
-    } else {
-      // If no userId, create one
-      const createUser = async () => {
-        try {
-          const res = await fetch(`${API_BASE_URL}/api/users/create`, {
-            method: "POST",
-          });
-          const data = await res.json();
-          localStorage.setItem("vaishworld_userId", data.userId);
-          setUserId(data.userId);
-        } catch (err) {
-          console.error("Failed to create user:", err);
-        }
-      };
-      createUser();
-    }
+    const initUser = async () => {
+      const id = await getUserId();
+      setUserId(id);
+      setLoading(false);
+    };
+    initUser();
   }, []);
 
   const handleShuffleClick = () => {
@@ -160,11 +144,11 @@ export default function Level1Page() {
         }),
       });
 
-      if (!response.ok) {
+      if (!res.ok) {
         throw new Error("Failed to save answer");
       }
 
-      const data = await response.json();
+      const data = await res.json();
       console.log("Answer saved:", data);
       return data;
     } catch (err) {
@@ -198,6 +182,16 @@ export default function Level1Page() {
       }
     }, FLIP_HOLD_MS);
   };
+
+  if (loading) {
+    return (
+      <div className="level1-page">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <p style={{ color: 'var(--sand)', fontSize: '1.2rem' }}>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="level1-page">

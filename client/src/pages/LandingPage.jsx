@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 import API_BASE_URL from '../config';
+import { getUserId } from '../utils/session';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -51,11 +52,27 @@ export default function LandingPage() {
       
       // Save userId to localStorage
       localStorage.setItem("vaishworld_userId", userIdFromServer);
+      
+      // Now use getUserId() to verify the user was created
+      const userId = await getUserId();
+      console.log("User ID verified:", userId);
+      
       navigate("/page-2");
       
     } catch (err) {
       console.error("Error:", err);
       setStatus("Upload failed, but you can still continue.");
+      
+      // Try to get or create userId even if upload failed
+      try {
+        const userId = await getUserId();
+        if (userId) {
+          console.log("User ID recovered:", userId);
+        }
+      } catch (e) {
+        console.error("Failed to recover user ID:", e);
+      }
+      
       // Try to continue anyway
       navigate("/page-2");
     } finally {

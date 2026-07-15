@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./FeedbackPage.css";
 import API_BASE_URL from '../config';
+import { getUserId } from '../utils/session';
 
 const collageImages = [
   { src: "/vinyl.png", alt: "" },
@@ -20,12 +21,15 @@ export default function FeedbackPage() {
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedId = localStorage.getItem("vaishworld_userId");
-    if (storedId) {
-      setUserId(storedId);
-    }
+    const initUser = async () => {
+      const id = await getUserId();
+      setUserId(id);
+      setLoading(false);
+    };
+    initUser();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -36,12 +40,12 @@ export default function FeedbackPage() {
     }
 
     if (!userId) {
-      setStatus("User ID not found. Please start from the beginning.");
+      setStatus("User session expired. Please refresh the page.");
       return;
     }
 
     setSubmitting(true);
-    setStatus("");
+    setStatus("Sending...");
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/feedback`, {
@@ -68,6 +72,16 @@ export default function FeedbackPage() {
       setSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="feedback-page">
+        <div className="collage-grid" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <p style={{ color: 'white', fontSize: '1.2rem' }}>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="feedback-page">
