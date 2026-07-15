@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Level1Page.css";
 import API_BASE_URL from '../config';
 import { getUserId } from '../utils/session';
+import ShuffleLoading from '../components/ShuffleLoading';
 
 const questions = [
   {
@@ -76,6 +77,10 @@ export default function Level1Page() {
   const [userId, setUserId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  
+  // Shuffle loading states
+  const [showShuffle, setShowShuffle] = useState(false);
+  const [quizReady, setQuizReady] = useState(false);
 
   const [shufflePhase, setShufflePhase] = useState("idle");
   const [shuffleQuote, setShuffleQuote] = useState(null);
@@ -85,7 +90,6 @@ export default function Level1Page() {
     shufflePhase === "flipped" ||
     shufflePhase === "unflipping";
 
-  // Audio ref
   const audioRef = useRef(null);
 
   // Get userId using the session helper
@@ -98,21 +102,33 @@ export default function Level1Page() {
     initUser();
   }, []);
 
-  // ✅ Play sound on BOTH flip and flip-back for quiz card
+  // Play sound on quiz card flip
   useEffect(() => {
-    if (audioRef.current) {
+    if (flipped && audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play().catch(err => console.log("Audio play failed:", err));
     }
   }, [flipped]);
 
-  // ✅ Play sound on BOTH flip and flip-back for shuffle card
+  // Play sound on shuffle card flip
   useEffect(() => {
-    if (audioRef.current) {
+    if (shuffleFlipped && audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play().catch(err => console.log("Audio play failed:", err));
     }
   }, [shuffleFlipped]);
+
+  const handleBegin = () => {
+    if (!started) {
+      setStarted(true);
+      setShowShuffle(true);
+    }
+  };
+
+  const handleShuffleComplete = () => {
+    setShowShuffle(false);
+    setQuizReady(true);
+  };
 
   const handleShuffleClick = () => {
     if (shufflePhase !== "idle") return;
@@ -135,10 +151,6 @@ export default function Level1Page() {
   };
 
   const isLastQuestion = qIndex === questions.length - 1;
-
-  const handleBegin = () => {
-    if (!started) setStarted(true);
-  };
 
   const saveQuizAnswer = async (questionIndex, question, selectedOption, isCorrect) => {
     if (!userId) {
@@ -208,9 +220,18 @@ export default function Level1Page() {
     );
   }
 
+  // Show just shuffle loading if active
+  if (showShuffle) {
+    return (
+      <div className="level1-page">
+        <audio ref={audioRef} src="/audio.mp3" preload="auto" />
+        <ShuffleLoading onComplete={handleShuffleComplete} />
+      </div>
+    );
+  }
+
   return (
     <div className="level1-page">
-      {/* Audio element - plays when cards flip */}
       <audio ref={audioRef} src="/audio.mp3" preload="auto" />
 
       <div className="level1-copy">
@@ -222,13 +243,19 @@ export default function Level1Page() {
         </h2>
         <p className="level1-sub">5 cards.</p>
         <p className="level1-sub">No second chances.</p>
-        <button
-          type="button"
-          className={`level1-begin ${started ? "is-hidden" : ""}`}
-          onClick={handleBegin}
-        >
-          Click to begin.
-        </button>
+        {!started ? (
+          <button
+            type="button"
+            className="level1-begin"
+            onClick={handleBegin}
+          >
+            Click to begin.
+          </button>
+        ) : (
+          <p className="level1-sub" style={{ color: 'var(--sand)', opacity: 0.7 }}>
+            Good luck!
+          </p>
+        )}
       </div>
 
       <div className="card-stack">

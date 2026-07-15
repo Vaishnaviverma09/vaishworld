@@ -1,0 +1,109 @@
+.shuffle-loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--brick);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeOut 0.5s ease 4.2s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+.shuffle-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+}
+
+.shuffle-loading-text {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--sand);
+  margin: 0;
+  animation: pulse-text 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.shuffle-loading-subtext {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--sand);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.shuffle-card-stack {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  margin: 0 auto;
+}
+
+.shuffle-card-item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+
+.shuffle-card-item:active {
+  cursor: grabbing;
+}
+
+.shuffle-card-face {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  background: var(--sand);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.shuffle-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- Mobile responsive ---- */
+@media (max-width: 600px) {
+  .shuffle-card-stack {
+    width: 150px;
+    height: 210px;
+  }
+  
+  .shuffle-loading-text {
+    font-size: 1.3rem;
+  }
+  
+  .shuffle-loading-subtext {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .shuffle-card-stack {
+    width: 120px;
+    height: 168px;
+  }
+  
+  .shuffle-loading-text {
+    font-size: 1.1rem;
+  }
+}
