@@ -2,7 +2,10 @@ const express = require("express");
 const User = require("../models/User");
 const router = express.Router();
 
-// ✅ PUT SPECIFIC ROUTES FIRST (BEFORE dynamic routes)
+// ============================================
+// SPECIFIC ROUTES FIRST (no dynamic params)
+// ============================================
+
 // POST - Create new user
 router.post("/create", async (req, res) => {
   console.log("📝 Creating new user...");
@@ -27,7 +30,11 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// GET - Get user by ID (dynamic route goes LAST)
+// ============================================
+// DYNAMIC ROUTES LAST (with :params)
+// ============================================
+
+// GET - Get user by ID
 router.get("/:userId", async (req, res) => {
   try {
     console.log("🔍 Finding user:", req.params.userId);
@@ -42,7 +49,25 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-// PUT - Update user (dynamic route goes LAST)
+// GET - Get user with quiz answers only
+router.get("/:userId/quiz", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId)
+      .select('quizAnswers quizScore quizCompleted');
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json({
+      quizAnswers: user.quizAnswers,
+      quizScore: user.quizScore,
+      quizCompleted: user.quizCompleted
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT - Update user (general)
 router.put("/:userId", async (req, res) => {
   try {
     const updateData = req.body;

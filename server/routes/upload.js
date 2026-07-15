@@ -2,13 +2,21 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const crypto = require("crypto");
-const fs = require("fs");
 const User = require("../models/User");
 
 const router = express.Router();
 
-// Use memory storage to get file buffer
-const storage = multer.memoryStorage();
+// Multer configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "..", "uploads"));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = crypto.randomBytes(8).toString("hex");
+    const ext = path.extname(file.originalname) || ".png";
+    cb(null, `auth-${Date.now()}-${uniqueSuffix}${ext}`);
+  },
+});
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
@@ -21,9 +29,14 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
+// ============================================
+// SPECIFIC ROUTES FIRST
+// ============================================
+
+// POST - Upload image and create user
 router.post("/", (req, res) => {
   upload.single("image")(req, res, async (err) => {
     if (err) {
@@ -34,26 +47,29 @@ router.post("/", (req, res) => {
     }
 
     try {
-      // Convert image to Base64
-      const base64Image = req.file.buffer.toString('base64');
+      console.log("📝 Uploading image:", req.file.filename);
       
-      // Create user with Base64 image
+      // Create user with image info
       const user = new User({
         image: {
-          data: base64Image,
-          contentType: req.file.mimetype,
-          filename: req.file.originalname
+          filename: req.file.filename,
+          url: `/uploads/${req.file.filename}`,
+          uploadedAt: new Date()
         }
       });
       await user.save();
       
+      console.log("✅ User created with image:", user._id);
+      
       return res.json({
         success: true,
         message: "Authentication image received.",
+        filename: req.file.filename,
+        url: `/uploads/${req.file.filename}`,
         userId: user._id
       });
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("❌ Error creating user:", error);
       return res.status(500).json({ error: "Failed to create user record" });
     }
   });

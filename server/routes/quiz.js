@@ -2,11 +2,14 @@ const express = require("express");
 const User = require("../models/User");
 const router = express.Router();
 
-// POST /api/quiz/:userId/answer - Save a single quiz answer
+
 router.post("/:userId/answer", async (req, res) => {
   try {
     const { userId } = req.params;
     const { questionIndex, question, selectedOption, isCorrect, correctAnswer } = req.body;
+
+    console.log("📝 Saving quiz answer for user:", userId);
+    console.log("📝 Question:", questionIndex, question);
 
     const user = await User.findById(userId);
     if (!user) {
@@ -35,6 +38,8 @@ router.post("/:userId/answer", async (req, res) => {
 
     await user.save();
 
+    console.log("✅ Answer saved. Score:", user.quizScore);
+
     res.json({
       success: true,
       score: user.quizScore,
@@ -42,12 +47,16 @@ router.post("/:userId/answer", async (req, res) => {
       totalAnswers: user.quizAnswers.length
     });
   } catch (err) {
-    console.error("Error saving quiz answer:", err);
+    console.error("❌ Error saving quiz answer:", err);
     res.status(500).json({ error: "Failed to save quiz answer" });
   }
 });
 
-// GET /api/quiz/:userId - Get all quiz answers
+// ============================================
+// DYNAMIC ROUTES LAST (with :params)
+// ============================================
+
+// GET - Get all quiz answers for a user
 router.get("/:userId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
@@ -62,6 +71,7 @@ router.get("/:userId", async (req, res) => {
       quizCompleted: user.quizCompleted
     });
   } catch (err) {
+    console.error("❌ Error retrieving quiz data:", err);
     res.status(500).json({ error: "Failed to retrieve quiz data" });
   }
 });
