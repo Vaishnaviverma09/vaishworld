@@ -7,7 +7,7 @@ export default function QRPage() {
 
   // Cache-busting query param so a fresh, random QR image is requested
   // from the server each time this page mounts.
-  const qrSrc = "\qrcode_373783327_b5f87535deaf2789a486e0f90d3fe939.png";
+  const qrSrc = "\qrcode.png";
 
   return (
     <div className="qr-page">

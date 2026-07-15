@@ -104,19 +104,20 @@ export default function Level1Page() {
 
   // Play sound on quiz card flip
   useEffect(() => {
-    if (flipped && audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(err => console.log("Audio play failed:", err));
-    }
-  }, [flipped]);
+  // Don't play on initial render (when flipped is still its initial value)
+  if (audioRef.current) {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(err => console.log("Audio play failed:", err));
+  }
+}, [flipped]);  // ← Triggers on BOTH true and false changes
 
-  // Play sound on shuffle card flip
-  useEffect(() => {
-    if (shuffleFlipped && audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play().catch(err => console.log("Audio play failed:", err));
-    }
-  }, [shuffleFlipped]);
+// Play sound whenever the shuffle card flips (both directions)
+useEffect(() => {
+  if (audioRef.current) {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(err => console.log("Audio play failed:", err));
+  }
+}, [shuffleFlipped]);  
 
   const handleBegin = () => {
     if (!started) {
