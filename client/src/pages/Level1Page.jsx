@@ -98,17 +98,17 @@ export default function Level1Page() {
     initUser();
   }, []);
 
-  // Play sound when quiz card flips
+  // ✅ Play sound on BOTH flip and flip-back for quiz card
   useEffect(() => {
-    if (flipped && audioRef.current) {
+    if (audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play().catch(err => console.log("Audio play failed:", err));
     }
   }, [flipped]);
 
-  // Play sound when shuffle card flips
+  // ✅ Play sound on BOTH flip and flip-back for shuffle card
   useEffect(() => {
-    if (shuffleFlipped && audioRef.current) {
+    if (audioRef.current) {
       audioRef.current.currentTime = 0;
       audioRef.current.play().catch(err => console.log("Audio play failed:", err));
     }
