@@ -57,7 +57,7 @@ const PacmanLoading = ({ onComplete }) => {
       <div className="pacman-loading-container">
         <div className="pacman-loading-row">
           <div className="pacman-character">
-            <img src="/image.png" alt="Pacman" className="pacman-image" />
+            <img src="/ghost.png" alt="Pacman" className="pacman-image" />
             <div className="pacman-mouth"></div>
           </div>
           {squares}
