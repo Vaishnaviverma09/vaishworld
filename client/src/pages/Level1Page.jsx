@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";  // ← Add useCallback
 import { useNavigate } from "react-router-dom";
 import "./Level1Page.css";
 import API_BASE_URL from '../config';

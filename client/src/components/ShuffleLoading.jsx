@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';  // ← ADD useCallback
 import { motion, useMotionValue, useMotionValueEvent } from 'framer-motion';
 import './ShuffleLoading.css';
 
