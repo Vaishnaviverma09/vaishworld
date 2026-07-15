@@ -2,11 +2,17 @@ const express = require("express");
 const User = require("../models/User");
 const router = express.Router();
 
-// POST - Create new user (for when no image is uploaded)
+// ✅ PUT SPECIFIC ROUTES FIRST (BEFORE dynamic routes)
+// POST - Create new user
 router.post("/create", async (req, res) => {
+  console.log("📝 Creating new user...");
+  
   try {
     const user = new User();
     await user.save();
+    
+    console.log("✅ User created:", user._id);
+    
     res.json({ 
       success: true,
       userId: user._id,
@@ -16,15 +22,35 @@ router.post("/create", async (req, res) => {
       }
     });
   } catch (err) {
-    console.error("Error creating user:", err);
+    console.error("❌ Error creating user:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET - Get user by ID with all data
+// GET - Get user by ID (dynamic route goes LAST)
 router.get("/:userId", async (req, res) => {
   try {
+    console.log("🔍 Finding user:", req.params.userId);
     const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error("❌ Error finding user:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT - Update user (dynamic route goes LAST)
+router.put("/:userId", async (req, res) => {
+  try {
+    const updateData = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      updateData,
+      { new: true, runValidators: true }
+    );
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
