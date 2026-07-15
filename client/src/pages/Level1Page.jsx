@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Level1Page.css";
 import API_BASE_URL from '../config';
@@ -79,6 +79,14 @@ export default function Level1Page() {
 
   const [shufflePhase, setShufflePhase] = useState("idle");
   const [shuffleQuote, setShuffleQuote] = useState(null);
+  const shuffleFlipped = shufflePhase === "flipped";
+  const shuffleCentered =
+    shufflePhase === "moving" ||
+    shufflePhase === "flipped" ||
+    shufflePhase === "unflipping";
+
+  // Audio ref
+  const audioRef = useRef(null);
 
   // Get userId using the session helper
   useEffect(() => {
@@ -89,6 +97,22 @@ export default function Level1Page() {
     };
     initUser();
   }, []);
+
+  // Play sound when quiz card flips
+  useEffect(() => {
+    if (flipped && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(err => console.log("Audio play failed:", err));
+    }
+  }, [flipped]);
+
+  // Play sound when shuffle card flips
+  useEffect(() => {
+    if (shuffleFlipped && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(err => console.log("Audio play failed:", err));
+    }
+  }, [shuffleFlipped]);
 
   const handleShuffleClick = () => {
     if (shufflePhase !== "idle") return;
@@ -109,12 +133,6 @@ export default function Level1Page() {
     elapsed += SHUFFLE_MOVE_MS;
     setTimeout(() => setShufflePhase("idle"), elapsed);
   };
-
-  const shuffleCentered =
-    shufflePhase === "moving" ||
-    shufflePhase === "flipped" ||
-    shufflePhase === "unflipping";
-  const shuffleFlipped = shufflePhase === "flipped";
 
   const isLastQuestion = qIndex === questions.length - 1;
 
@@ -166,17 +184,14 @@ export default function Level1Page() {
     setBackImage(isCorrect ? currentQuestion.correctImage : currentQuestion.wrongImage);
     setFlipped(true);
 
-    // Save the answer to database
     await saveQuizAnswer(qIndex, currentQuestion, selectedOption, isCorrect);
 
     setTimeout(() => {
       if (isLastQuestion) {
-        // Quiz complete - navigate to pacman
         setTimeout(() => {
           navigate("/pacman");
         }, FLIP_HOLD_MS);
       } else {
-        // Move to next question
         setFlipped(false);
         setQIndex((i) => i + 1);
       }
@@ -195,6 +210,9 @@ export default function Level1Page() {
 
   return (
     <div className="level1-page">
+      {/* Audio element - plays when cards flip */}
+      <audio ref={audioRef} src="/audio.mp3" preload="auto" />
+
       <div className="level1-copy">
         <p className="level1-eyebrow">LEVEL 1</p>
         <h2 className="level1-title">

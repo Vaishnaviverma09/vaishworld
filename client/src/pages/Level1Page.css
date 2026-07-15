@@ -198,6 +198,7 @@
   cursor: pointer;
 }
 
+/* ---- Tablet ---- */
 @media (max-width: 900px) {
   .level1-page {
     padding: 48px 20px 36px;
@@ -230,6 +231,7 @@
   }
 }
 
+/* ---- Mobile (600px and below) ---- */
 @media (max-width: 600px) {
   .level1-page {
     padding: 40px 16px 32px;
@@ -238,30 +240,52 @@
   .level1-title {
     font-size: 1.7rem;
   }
+  
+  /* Card stack - increased height for larger middle card */
   .card-stack {
-    height: 300px;
+    height: 340px;
   }
+  
+  /* Side cards - smaller and pushed further out */
   .deco-card {
-    width: 130px;
-    height: 185px;
-    top: 30px;
+    width: 90px;
+    height: 128px;
+    top: 60px;
+    border-radius: 10px;
   }
-  .card-jack { left: 0%; }
-  .card-queen { left: 16%; }
-  .card-back-1 { right: 16%; }
-  .card-back-2 { right: 0%; }
+  .card-jack { 
+    left: 0%; 
+    transform: rotate(-12deg);
+  }
+  .card-queen { 
+    left: 10%; 
+    transform: rotate(-6deg);
+  }
+  .card-back-1 { 
+    right: 10%; 
+    transform: rotate(6deg);
+  }
+  .card-back-2 { 
+    right: 0%; 
+    transform: rotate(12deg);
+  }
+  
+  /* Middle quiz card - LARGER than side cards */
   .quiz-card {
-    width: 190px;
-    height: 265px;
+    width: 220px;
+    height: 300px;
+    z-index: 10; /* Ensure it's above side cards */
   }
+  
   .quiz-question legend {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
   .quiz-option {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
   }
 }
 
+/* ---- Small phones (400px and below) ---- */
 @media (max-width: 400px) {
   .level1-page {
     padding: 32px 12px 28px;
@@ -276,28 +300,47 @@
   .level1-sub {
     font-size: 0.85rem;
   }
+  
   .card-stack {
-    height: 240px;
+    height: 280px;
   }
+  
+  /* Side cards - even smaller */
   .deco-card {
-    width: 100px;
-    height: 142px;
-    top: 34px;
+    width: 70px;
+    height: 100px;
+    top: 50px;
+    border-radius: 8px;
   }
-  .card-jack { left: 0%; }
-  .card-queen { left: 15%; }
-  .card-back-1 { right: 15%; }
-  .card-back-2 { right: 0%; }
+  .card-jack { 
+    left: 0%; 
+    transform: rotate(-14deg);
+  }
+  .card-queen { 
+    left: 8%; 
+    transform: rotate(-7deg);
+  }
+  .card-back-1 { 
+    right: 8%; 
+    transform: rotate(7deg);
+  }
+  .card-back-2 { 
+    right: 0%; 
+    transform: rotate(14deg);
+  }
+  
+  /* Middle quiz card - larger than side cards */
   .quiz-card {
-    width: 150px;
-    height: 210px;
+    width: 180px;
+    height: 245px;
   }
+  
   .quiz-question legend {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
   }
   .quiz-option {
     font-size: 0.68rem;
-    gap: 6px;
+    gap: 4px;
   }
 }
 
@@ -321,7 +364,7 @@
 }
 
 .shuffle-card.is-centered {
-  top: calc(50% - 140px); /* half of the 280px centered height (was miscalculated for 240px) */
+  top: calc(50% - 140px); /* half of the 280px centered height */
   right: calc(50% - 100px); /* half of the 200px width at 280px height, 5:7 ratio */
   height: 280px;
 }
@@ -366,7 +409,7 @@
 .shuffle-quote {
   position: absolute;
   inset: 12% 10%;
-  margin-top:  40px;
+  margin-top: 40px;
   color: var(--wine-dark);
   font-family: var(--font-display);
   font-style: italic;
@@ -383,7 +426,7 @@
    Corner (resting/back-face) and centered (revealed/front-face) sizes both
    scale down together at each breakpoint, and the centering math is
    recalculated for each size (5:7 aspect ratio) so it stays perfectly
-   centered rather than drifting off-center like the desktop rule was. */
+   centered rather than drifting off-center. */
 @media (max-width: 900px) {
   .shuffle-card {
     top: 14px;
