@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./FeedbackPage.css";
 import API_BASE_URL from '../config';
-import { getUserId } from '../utils/session';
+import { getUserId, clearUserSession } from '../utils/session';
 
 const collageImages = [
   { src: "/vinyl.png", alt: "" },
@@ -22,26 +22,62 @@ export default function FeedbackPage() {
   const [submitting, setSubmitting] = useState(false);
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     const initUser = async () => {
-      const id = await getUserId();
-      setUserId(id);
-      setLoading(false);
+      try {
+        const id = await getUserId();
+        if (id) {
+          setUserId(id);
+          setStatus("");
+        } else {
+          // Try one more time with a fresh session
+          clearUserSession();
+          const retryId = await getUserId();
+          if (retryId) {
+            setUserId(retryId);
+            setStatus("");
+          } else {
+            setStatus("Unable to create user session. Please refresh the page.");
+          }
+        }
+      } catch (err) {
+        console.error("Error initializing user:", err);
+        setStatus("Error creating user session. Please refresh.");
+      } finally {
+        setLoading(false);
+      }
     };
     initUser();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!message.trim()) {
       setStatus("Please enter your feedback.");
       return;
     }
 
-    if (!userId) {
-      setStatus("User session expired. Please refresh the page.");
-      return;
+    // If no userId, try to create one
+    let currentUserId = userId;
+    if (!currentUserId) {
+      setStatus("Creating user session...");
+      try {
+        const id = await getUserId();
+        if (id) {
+          currentUserId = id;
+          setUserId(id);
+          setStatus("");
+        } else {
+          setStatus("Unable to create user session. Please refresh.");
+          return;
+        }
+      } catch (err) {
+        setStatus("Error creating user session. Please refresh.");
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -53,21 +89,32 @@ export default function FeedbackPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           message: message.trim(),
-          userId: userId
+          userId: currentUserId
         }),
       });
       
       const data = await res.json();
       
       if (!res.ok) {
+        // If server says user not found, try to recreate user
+        if (res.status === 404 && data.error?.includes("User not found")) {
+          clearUserSession();
+          const newId = await getUserId();
+          if (newId) {
+            setUserId(newId);
+            setStatus("User session recreated. Please try submitting again.");
+            setSubmitting(false);
+            return;
+          }
+        }
         throw new Error(data.error || "Request failed");
       }
       
-      setStatus("Thank you — your feedback has been received.");
+      setStatus("Thank you — your feedback has been received! ❤️");
       setMessage("");
     } catch (err) {
       console.error("Feedback error:", err);
-      setStatus("Something went wrong sending that. Please try again.");
+      setStatus("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
