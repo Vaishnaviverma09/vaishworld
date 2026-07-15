@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PacmanPage.css";
 import PacmanLoading from '../components/PacmanLoading';
@@ -29,7 +29,7 @@ const SONGS = [
   "❤️ The First Time — Damiano David",
   "🎬 Brooklyn Baby — Lana Del Rey",
   "🌌 Reflection — The Neighbourhood",
-  "🌲 Northern Attitude — Noah Kahan & Hozier",
+  "🌲 NFWMB - Hozier",
   "🌙 Space Song — Beach House",
 ];
 
@@ -107,6 +107,7 @@ export default function PacmanPage() {
 
   const progress = unlockedSongs.length;
 
+  // Show loading screen while loading
   if (loading) {
     return (
       <div className="pacman-page">
@@ -115,6 +116,7 @@ export default function PacmanPage() {
     );
   }
 
+  // Show game over screen when reaching the coffee cup
   if (gameOver) {
     return (
       <div className="pacman-page">
@@ -141,6 +143,7 @@ export default function PacmanPage() {
     );
   }
 
+  // Main game view
   return (
     <div className="pacman-page">
       <div className="pacman-copy">

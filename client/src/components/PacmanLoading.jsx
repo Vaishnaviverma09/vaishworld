@@ -2,37 +2,25 @@ import React, { useState, useEffect } from 'react';
 import './PacmanLoading.css';
 
 const PacmanLoading = ({ onComplete }) => {
-  const [phase, setPhase] = useState(0); // 0, 1, 2 = 3 rounds
-  const [progress, setProgress] = useState(0); // 0-4 squares per round
+  const [step, setStep] = useState(0); // 0-11 (12 squares total)
   const [isComplete, setIsComplete] = useState(false);
+  const totalSteps = 12; // 3 rounds × 4 squares
 
-  // Each round takes 1.5 seconds (4 squares × 0.375s each)
-  // Total: 3 rounds × 1.5s = 4.5 seconds
+  // Each step: 375ms → 12 steps × 375ms = 4500ms (4.5 seconds total)
   useEffect(() => {
-    const totalDuration = 4500;
-    const intervalTime = 375; // 0.375s per square (4 squares × 0.375s = 1.5s per round)
-    const totalSteps = 12; // 3 rounds × 4 squares
-
-    let step = 0;
     const interval = setInterval(() => {
-      step++;
-      
-      // Calculate which round and which square
-      const currentRound = Math.floor(step / 4);
-      const currentSquare = step % 4;
-      
-      if (step >= totalSteps) {
-        setIsComplete(true);
-        clearInterval(interval);
-        setTimeout(() => {
-          if (onComplete) onComplete();
-        }, 300);
-        return;
-      }
-      
-      setPhase(currentRound);
-      setProgress(currentSquare + 1);
-    }, intervalTime);
+      setStep((prev) => {
+        if (prev >= totalSteps - 1) {
+          setIsComplete(true);
+          clearInterval(interval);
+          setTimeout(() => {
+            if (onComplete) onComplete();
+          }, 300);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 375);
 
     return () => clearInterval(interval);
   }, [onComplete]);
@@ -41,37 +29,37 @@ const PacmanLoading = ({ onComplete }) => {
     return null;
   }
 
-  // Generate squares for current round
-  const squares = [];
-  for (let i = 0; i < 4; i++) {
-    const isEaten = i < progress;
-    squares.push(
-      <div key={i} className={`pacman-square ${isEaten ? 'eaten' : ''}`}>
-        {isEaten ? '✧' : '■'}
-      </div>
-    );
-  }
+  // Calculate Pacman position (0% to 100%)
+  const pacmanProgress = (step / (totalSteps - 1)) * 100;
 
   return (
     <div className="pacman-loading-overlay">
       <div className="pacman-loading-container">
-        <div className="pacman-loading-row">
-          <div className="pacman-character">
-            <img src="/ghost.png" alt="Pacman" className="pacman-image" />
+        <div className="pacman-track">
+          {/* Pacman character that moves right */}
+          <div 
+            className="pacman-character"
+            style={{ left: `${pacmanProgress}%` }}
+          >
+            <img src="/image.png" alt="Pacman" className="pacman-image" />
             <div className="pacman-mouth"></div>
           </div>
-          {squares}
+
+          {/* Squares that disappear as Pacman eats them */}
+          <div className="pacman-squares">
+            {[...Array(12)].map((_, index) => {
+              const isEaten = index <= step;
+              return (
+                <div 
+                  key={index} 
+                  className={`pacman-square ${isEaten ? 'eaten' : ''}`}
+                >
+                  {!isEaten && <span className="square-block">■</span>}
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <p className="pacman-loading-text">
-          Round {phase + 1} of 3
-        </p>
-        <div className="pacman-progress-bar">
-          <div 
-            className="pacman-progress-fill" 
-            style={{ width: `${((phase * 4 + progress) / 12) * 100}%` }}
-          />
-        </div>
-        <p className="pacman-loading-subtext">Loading your maze...</p>
       </div>
     </div>
   );
