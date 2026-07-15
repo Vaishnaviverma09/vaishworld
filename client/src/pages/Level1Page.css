@@ -358,15 +358,16 @@
   background: none;
   padding: 0;
   cursor: pointer;
-  z-index: 6; /* one above .quiz-card's z-index: 5 */
+  z-index: 100; /* Increased from 6 to 100 */
   perspective: 1000px;
   transition: top 0.7s ease, right 0.7s ease, height 0.7s ease;
 }
 
 .shuffle-card.is-centered {
-  top: calc(50% - 140px); /* half of the 280px centered height */
-  right: calc(50% - 100px); /* half of the 200px width at 280px height, 5:7 ratio */
+  top: calc(50% - 140px);
+  right: calc(50% - 100px);
   height: 280px;
+  z-index: 101; /* Even higher when centered */
 }
 
 .shuffle-card-inner {
@@ -432,11 +433,13 @@
     top: 14px;
     right: 14px;
     height: 52px;
+   z-index: 100 !important;
   }
   .shuffle-card.is-centered {
     top: calc(50% - 120px); /* half of 240px */
     right: calc(50% - 85.71px); /* half of ~171.4px width at 240px height */
     height: 240px;
+    z-index: 101 !important;
   }
   .shuffle-quote {
     font-size: 0.78rem;
@@ -449,11 +452,13 @@
     top: 12px;
     right: 12px;
     height: 42px;
+    z-index: 100 !important;
   }
   .shuffle-card.is-centered {
     top: calc(50% - 95px); /* half of 190px */
     right: calc(50% - 67.86px); /* half of ~135.7px width at 190px height */
     height: 190px;
+    z-index: 101 !important;
   }
   .shuffle-quote {
     font-size: 0.62rem;
@@ -467,11 +472,13 @@
     top: 10px;
     right: 10px;
     height: 34px;
+    z-index: 100 !important;
   }
   .shuffle-card.is-centered {
     top: calc(50% - 75px); /* half of 150px */
     right: calc(50% - 53.57px); /* half of ~107.1px width at 150px height */
     height: 150px;
+    z-index: 101 !important;
   }
   .shuffle-quote {
     font-size: 0.5rem;
