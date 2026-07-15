@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./FeedbackPage.css";
+import API_BASE_URL from '../config';
 
 const collageImages = [
   { src: "/vinyl.png", alt: "" },
@@ -43,7 +44,7 @@ export default function FeedbackPage() {
     setStatus("");
 
     try {
-      const res = await fetch("/api/feedback", {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 

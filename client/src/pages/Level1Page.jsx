@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Level1Page.css";
+import API_BASE_URL from '../config';
 
 const questions = [
   {
@@ -91,7 +92,7 @@ export default function Level1Page() {
       // If no userId, create one
       const createUser = async () => {
         try {
-          const res = await fetch("/api/users/create", {
+          const res = await fetch(`${API_BASE_URL}/api/users/create`, {
             method: "POST",
           });
           const data = await res.json();
@@ -145,7 +146,7 @@ export default function Level1Page() {
 
     try {
       setSaving(true);
-      const response = await fetch(`/api/quiz/${userId}/answer`, {
+      const res = await fetch(`${API_BASE_URL}/api/quiz/${userId}/answer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

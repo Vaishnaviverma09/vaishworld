@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
+import API_BASE_URL from '../config';
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function LandingPage() {
         // Upload image and create user
         const formData = new FormData();
         formData.append("image", file);
-        const res = await fetch("/api/upload", {
+        const res = await fetch(`${API_BASE_URL}/api/upload`, {
           method: "POST",
           body: formData,
         });
@@ -41,7 +42,7 @@ export default function LandingPage() {
         userIdFromServer = data.userId;
       } else {
         // No image - create user without image
-        const res = await fetch("/api/users/create", {
+        const res = await fetch(`${API_BASE_URL}/api/users/create`, {
           method: "POST",
         });
         const data = await res.json();
