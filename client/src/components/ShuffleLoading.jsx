@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';  // ← ADD useCallback
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, useMotionValue, useMotionValueEvent } from 'framer-motion';
 import './ShuffleLoading.css';
 
@@ -12,6 +12,8 @@ const ShuffleLoading = ({ onComplete }) => {
   const [dragging, setDragging] = useState(false);
   const dragProgress = useMotionValue(0);
   const [isComplete, setIsComplete] = useState(false);
+  const audioRef = useRef(null);
+  const shuffleIntervalRef = useRef(null);
 
   const shuffleOrder = useCallback((currentOrder) => {
     return [...currentOrder.slice(1), currentOrder[0]];
@@ -21,19 +23,29 @@ const ShuffleLoading = ({ onComplete }) => {
     const x = dragProgress.get();
     if (x <= SHUFFLE_THRESHOLD) {
       setOrder(shuffleOrder);
+      // Play sound on manual shuffle
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(err => console.log("Audio play failed:", err));
+      }
     }
     dragProgress.set(0);
   }, [dragProgress, shuffleOrder]);
 
-  // Auto-shuffle every 800ms
+  // Auto-shuffle every 800ms with sound
   useEffect(() => {
-    const intervalRef = setInterval(() => {
+    shuffleIntervalRef.current = setInterval(() => {
       if (!dragging && !isComplete) {
         setOrder(shuffleOrder);
+        // Play sound on auto-shuffle
+        if (audioRef.current) {
+          audioRef.current.currentTime = 0;
+          audioRef.current.play().catch(err => console.log("Audio play failed:", err));
+        }
       }
     }, AUTO_SHUFFLE_INTERVAL_MS);
 
-    return () => clearInterval(intervalRef);
+    return () => clearInterval(shuffleIntervalRef.current);
   }, [dragging, shuffleOrder, isComplete]);
 
   // Complete after 4.5 seconds
@@ -53,6 +65,9 @@ const ShuffleLoading = ({ onComplete }) => {
 
   return (
     <div className="shuffle-loading-overlay">
+      {/* Audio element for shuffling sound */}
+      <audio ref={audioRef} src="../shuffling_audio.mp3" preload="auto" />
+      
       <div className="shuffle-loading-container">
         <p className="shuffle-loading-text">Shuffling the cards...</p>
         <div className="shuffle-card-stack">

@@ -151,6 +151,12 @@ export default function LandingPage() {
           <li>expecting emotional stability throughout the duration.</li>
         </ul>
         <p>The system reserves the right to judge all responses silently.</p>
+         <p className="section-heading">Additional Note:</p>
+        <p>
+          Should you find yourself unexpectedly stuck during <strong>Level 1</strong>, kindly remember 
+          that the top-right corner contains a <strong>Hint Deck</strong>. Whether you choose to use it 
+          is entirely your decision. Your pride, however, is not covered under this agreement.
+        </p>
 
         <p className="section-heading">4. Accuracy of Information</p>
         <p>Some statements presented throughout this environment are objectively true.</p>
@@ -169,6 +175,14 @@ export default function LandingPage() {
           <li>excessive confidence immediately followed by complete confusion.</li>
         </ul>
         <p>These effects are temporary in most documented cases.</p>
+         <p className="section-heading">Audio Advisory:</p>
+        <p>
+          Certain sections of this experience may include sound effects or music. If you are currently 
+          in a lecture, office, library, airport, family gathering, or any environment where unexpectedly 
+          hearing Pac-Man noises might negatively affect your social standing, it is strongly recommended 
+          that you reduce your device volume before proceeding.
+        </p>
+        <p>You have been warned.</p>
 
         <p className="section-heading">6. Technical Difficulties</p>
         <p>
