@@ -517,7 +517,7 @@
     z-index: 101 !important;
   }
   .shuffle-quote {
-    font-size: 0.7rem;
+    font-size: 0.77rem;
     margin-top: 22px;
     -webkit-line-clamp: 6;
   }
@@ -597,7 +597,7 @@
     z-index: 101 !important;
   }
   .shuffle-quote {
-    font-size: 0.58rem;
+    font-size: 0.65rem;
     margin-top: 14px;
     inset: 10% 8%;
     -webkit-line-clamp: 5;
