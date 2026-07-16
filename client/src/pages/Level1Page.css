@@ -448,40 +448,156 @@
 }
 
 @media (max-width: 600px) {
+  .level1-page {
+    padding: 40px 16px 32px;
+    gap: 32px;
+  }
+  .level1-title {
+    font-size: 1.7rem;
+  }
+  
+  .card-stack {
+    height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .deco-card {
+    width: 90px;
+    height: 128px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 10px;
+  }
+  .card-jack { 
+    left: 0%; 
+    transform: translateY(-50%) rotate(-12deg);
+  }
+  .card-queen { 
+    left: 10%; 
+    transform: translateY(-50%) rotate(-6deg);
+  }
+  .card-back-1 { 
+    right: 10%; 
+    transform: translateY(-50%) rotate(6deg);
+  }
+  .card-back-2 { 
+    right: 0%; 
+    transform: translateY(-50%) rotate(12deg);
+  }
+  
+  .quiz-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 300px;
+    z-index: 10;
+  }
+  
+  .quiz-question legend {
+    font-size: 0.9rem;
+  }
+  .quiz-option {
+    font-size: 0.78rem;
+  }
+  
   .shuffle-card {
     top: 12px;
     right: 12px;
-    height: 42px;
+    height: 57px;
     z-index: 100 !important;
   }
   .shuffle-card.is-centered {
-    top: calc(50% - 95px); /* half of 190px */
-    right: calc(50% - 67.86px); /* half of ~135.7px width at 190px height */
-    height: 190px;
+    top: calc(50% - 102.5px);
+    right: calc(50% - 73.21px);
+    height: 205px;
     z-index: 101 !important;
   }
   .shuffle-quote {
-    font-size: 0.62rem;
+    font-size: 0.7rem;
     margin-top: 22px;
     -webkit-line-clamp: 6;
   }
 }
 
 @media (max-width: 400px) {
+  .level1-page {
+    padding: 32px 12px 28px;
+    gap: 24px;
+  }
+  .level1-eyebrow {
+    font-size: 1.3rem;
+  }
+  .level1-title {
+    font-size: 1.4rem;
+  }
+  .level1-sub {
+    font-size: 0.85rem;
+  }
+  
+  .card-stack {
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .deco-card {
+    width: 70px;
+    height: 100px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 8px;
+  }
+  .card-jack { 
+    left: 0%; 
+    transform: translateY(-50%) rotate(-14deg);
+  }
+  .card-queen { 
+    left: 8%; 
+    transform: translateY(-50%) rotate(-7deg);
+  }
+  .card-back-1 { 
+    right: 8%; 
+    transform: translateY(-50%) rotate(7deg);
+  }
+  .card-back-2 { 
+    right: 0%; 
+    transform: translateY(-50%) rotate(14deg);
+  }
+  
+  .quiz-card {
+    width: 180px;
+    height: 245px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .quiz-question legend {
+    font-size: 0.78rem;
+  }
+  .quiz-option {
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+  
   .shuffle-card {
     top: 10px;
     right: 10px;
-    height: 34px;
+    height: 49px;
     z-index: 100 !important;
   }
   .shuffle-card.is-centered {
-    top: calc(50% - 75px); /* half of 150px */
-    right: calc(50% - 53.57px); /* half of ~107.1px width at 150px height */
-    height: 150px;
+    top: calc(50% - 82.5px);
+    right: calc(50% - 58.93px);
+    height: 165px;
     z-index: 101 !important;
   }
   .shuffle-quote {
-    font-size: 0.5rem;
+    font-size: 0.58rem;
     margin-top: 14px;
     inset: 10% 8%;
     -webkit-line-clamp: 5;
